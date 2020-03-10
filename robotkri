@@ -1,0 +1,222 @@
+package step;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.internal.FindsByXPath;
+import cucumber.api.java.en.Given;
+import cucumber.api.java.en.Then;
+import cucumber.api.java.en.When;
+ 
+
+public class Step_Login {
+	int cantidad = 3;   //cuantos días quieres que cierre
+	int cantidad1 = 1;  //cuantas tareas quiere que realize
+	int horas = 9;
+
+
+	public static WebDriver driver;
+
+
+	
+		
+	
+	@Given("Entrar a la pagina con el usuario {string} y el pass {string}")
+
+	public void entrar_a_la_pagina_con_el_usuario_y_el_pass(String string, String string2) throws InterruptedException {
+		
+		System.setProperty("webdriver.chrome.driver", "C:/Users/kyoung/Downloads/chromedriver.exe");
+		
+	    ChromeOptions options = new ChromeOptions(); 
+	    options.addArguments("start-maximized");
+	    options.setExperimentalOption("useAutomationExtension", false);
+	    
+	    driver = new ChromeDriver(options);
+		driver.get("http://operacion.choucairtesting.com/MaxtimeChc/Login.aspx?ReturnUrl=%2fMaxtimeChc");
+	
+		Thread.sleep(2000);
+		driver.findElement(By.id("Logon_v0_MainLayoutEdit_xaf_l30_xaf_dviUserName_Edit_I")).sendKeys("kyoungv");
+		Thread.sleep(2000);
+		driver.findElement(By.id("Logon_v0_MainLayoutEdit_xaf_l35_xaf_dviPassword_Edit_I")).sendKeys("kriss60306556");		
+		Thread.sleep(2000);
+		
+	}
+
+	
+
+	@When("Toco el boton de acceder")
+	public void toco_el_boton_de_acceder()  throws InterruptedException {
+		driver.findElement(By.id("Logon_PopupActions_Menu_DXI0_T")).click();
+		Thread.sleep(3000);
+		 System.out.println("PASO LOGIN");
+		
+	
+	}
+
+	@Then("Me encuentro en la pagina principal")
+	public void me_encuentro_en_la_pagina_principal()  throws InterruptedException {
+		
+		String TXT_HOME = "Reporte de tiempos / Días pendientes por cerrar";
+		String mostrar = driver.findElement(By.id("Vertical_VCC_VSL")).getText();
+		//System.out.println(mostrar);
+		Thread.sleep(1000);
+		if (TXT_HOME.equals(mostrar)) {
+			System.out.println("PASO COMPARACION DE TITULO");
+			 Thread.sleep(3000);
+			for (int i= 1; i <= cantidad; i ++)
+			{
+				System.out.println("CANTIDAD: " + i);
+			 Thread.sleep(3000);
+			 driver.findElement(By.id("Vertical_v1_LE_v2_tccell0_0")).click();
+			 Thread.sleep(3000);    
+			 String horas = driver.findElement(By.xpath("//*[contains(@id,'dviHorasLaborales_View')]")).getText();
+			 int result = Integer.valueOf(horas);
+			 //System.out.println("PASO VALIDADOR DE HORAS");
+
+		
+			 if (result > 0)
+				 //***CUANDO LA HORA LABORAL ES MAYOR QUE 0
+					 {
+					for (int j= 1; j <= cantidad1; j ++) {
+				 //CLICK EN EL BOTON NUEVO
+						System.out.println("CANTIDAD1: " + j);
+				 Thread.sleep(3000);
+				 driver.findElement(By.xpath("//*[contains(@id,'dviReporteDetallado_ToolBar_Menu_DXI0_')]")).click();
+				 Thread.sleep(3000);
+				 //System.out.println("ABRIO NUEVO");
+				 Thread.sleep(3000);
+				 
+				 //AGREGA EL PROYECTO
+				 driver.findElement(By.xpath("//*[contains(@id,'dviProyecto_Edit_Find')]")).click();
+				//*[@id="Vertical_v6_MainLayoutEdit_xaf_l128_xaf_dviProyecto_Edit"]/tbody/tr/td[2]
+				 Thread.sleep(1000);
+				 driver.switchTo().frame(0);
+				 //System.out.println("PASO FRAME");
+				 Thread.sleep(2000);
+				 driver.findElement(By.xpath("//*[@id='Dialog_SearchActionContainer_Menu_ITCNT0_xaf_a0_Ed_I']")).sendKeys("Varios Cliente Banistmo");
+				 Thread.sleep(3000);
+				 //driver.findElement(By.id("")).click();
+				 driver.findElement(By.id("Dialog_SearchActionContainer_Menu_ITCNT0_xaf_a0_B")).click();
+				 Thread.sleep(2000);
+				 driver.findElement(By.xpath("//*[contains(@id,'tccell0_4')]")).click();
+				 Thread.sleep(2000);
+				 //driver.switchTo().defaultContent();
+				 //System.out.println("PASO PROYECTO");
+				 Thread.sleep(2500);
+				 
+				 //AGREGA TIPO DE HORA
+	  
+				 driver.findElement(By.xpath("//*[contains(@id,'dviTipoHora_Edit_DD_I')]")).click();
+				 Thread.sleep(2000);
+				 driver.switchTo().defaultContent();
+				 Thread.sleep(2000);
+				 driver.findElement(By.xpath("//*[contains(@id,'dviTipoHora_Edit_DD_DDD_L_LBI4T0')]")).click();
+
+				
+				 Thread.sleep(2000);
+				 
+				 //AGREGA TIPO
+				 driver.findElement(By.xpath("//*[contains(@id,'dviServicio_Edit_Find_B')]")).click();
+				 Thread.sleep(2000);
+				 driver.switchTo().frame(0);
+				 //System.out.println("PASO FRAME");
+				 Thread.sleep(2000);
+				 driver.findElement(By.xpath("//*[contains(@id,'Menu_ITCNT0_xaf_a0_Ed_I')]")).sendKeys("CA CVDS");
+				 Thread.sleep(2000);
+				 driver.findElement(By.id("Dialog_SearchActionContainer_Menu_ITCNT0_xaf_a0_B")).click();
+				 Thread.sleep(2000);
+				 driver.findElement(By.xpath("//*[contains(@id,'tccell0_0')]")).click();
+				 Thread.sleep(1000);
+				 driver.switchTo().defaultContent();
+				 Thread.sleep(1000);
+				 driver.findElement(By.xpath("//*[contains(@id,'dviActividad_Edit_DD_B-1')]")).click();
+				 Thread.sleep(1000);
+				 
+				 if (j==2)
+						 {
+					 driver.findElement(By.xpath("//*[contains(@id,'dviActividad_Edit_DD_I')]")).sendKeys("DOCUMENTACIÓN DIARIA");
+					 Thread.sleep(1000);
+					 driver.findElement(By.xpath("//*[contains(@id,'dviActividad_Edit_DD_B-1')]")).click();
+					 Thread.sleep(1000);
+					 driver.findElement(By.xpath("//*[contains(@id,'dviHoras_Edit_I')]")).sendKeys("1");
+					 Thread.sleep(1000);
+					 driver.findElement(By.xpath("//*[contains(@id,'dviComentario_Edit_I')]")).sendKeys("MODIFICACION DE CASOS DE PRUEBAS PARA LA BAJADA DEL WAS");
+					 Thread.sleep(1000);}
+				 
+					 if (j==3) {
+						 
+						 driver.findElement(By.xpath("//*[contains(@id,'dviActividad_Edit_DD_I')]")).sendKeys("NOV-REUNIONES FACTURABLE");
+						 Thread.sleep(1000);
+						 driver.findElement(By.xpath("//*[contains(@id,'dviActividad_Edit_DD_B-1')]")).click();
+						 Thread.sleep(1000);
+						 driver.findElement(By.xpath("//*[contains(@id,'dviHoras_Edit_I')]")).sendKeys("3.5");
+						 Thread.sleep(1000);
+						 driver.findElement(By.xpath("//*[contains(@id,'dviComentario_Edit_I')]")).sendKeys("DOCUMENTACION DE PRUEBAS ESPECIALIZADAS [NO TERMINADA] ");
+						 Thread.sleep(1000);
+						 
+					 }
+					 if (j==1)
+						 
+				 {
+						 driver.findElement(By.xpath("//*[contains(@id,'dviActividad_Edit_DD_I')]")).sendKeys("CAPACITACIÓN RECIBIDA POR INGRESO/RETIRO CAMBIOS INTERNOS - NEGOCIO FACTURABLE");  //EJECUCIÓN DE PRUEBAS
+				 Thread.sleep(1000);
+				 driver.findElement(By.xpath("//*[contains(@id,'dviActividad_Edit_DD_B-1')]")).click();
+				 Thread.sleep(1000);
+				 driver.findElement(By.xpath("//*[contains(@id,'dviHoras_Edit_I')]")).sendKeys("9");
+				 Thread.sleep(1000);
+				 driver.findElement(By.xpath("//*[contains(@id,'dviComentario_Edit_I')]")).sendKeys("Se recibió la capacitación impartida por Omar Pinzón, persona que estaba realizando mis vacaciones. Se reviso temas de SMG3 y Power Curve.");
+						 Thread.sleep(1000);
+				 Thread.sleep(1000);}
+				 driver.findElement(By.xpath("//*[contains(@id,'Vertical_EditModeActions2_Menu_DXI1_T')]")).click();
+				 
+				 }
+			 
+					 Thread.sleep(2000);
+					 driver.findElement(By.id("Vertical_TB_Menu_DXI1_")).click();
+					 Thread.sleep(2000);
+					 driver.switchTo().frame(0);
+					 Thread.sleep(2000);
+					 driver.findElement(By.id("Dialog_actionContainerHolder_Menu_DXI0_")).click();
+					 Thread.sleep(5000);
+				
+				 
+					 }
+			 else
+			 {
+				 //**********CUANDO EL MAXTIME TIENE LA HORA LABORAL EN 0
+				 driver.findElement(By.id("Vertical_TB_Menu_DXI1_")).click();
+				 Thread.sleep(2000);
+				 driver.switchTo().frame(0);
+				 Thread.sleep(2000);
+				 driver.findElement(By.id("Dialog_actionContainerHolder_Menu_DXI0_")).click();
+				 Thread.sleep(5000);
+				 
+			 }
+			 
+			
+			//System.out.println(table);
+			 }
+			
+			Thread.sleep(2000);
+			 }
+		
+		
+		else
+			{System.out.println("NOOO PASO");
+			Thread.sleep(2000);}
+			
+		
+	
+		
+		
+		
+		driver.close();
+	}
+	}
+		
+
+
+
+
+
