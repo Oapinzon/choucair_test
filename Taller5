@@ -1,0 +1,27 @@
+package org.tester.prueba;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class Taller5 {
+    public static void main(String[] args) {
+        WebDriver driver;
+        String baseUrl = "https://simon.inder.gov.co/registro";
+
+        String chromePath = System.setProperty("webdriver.chrome.driver", "/home/oapinzon/Documents/DEV/java/Selenium/chromedriver_linux64/chromedriver");
+
+        System.getProperty("webdriver.chrome.driver", chromePath);
+        driver = new ChromeDriver();
+        driver.get(baseUrl);
+        //Maximizar la pantalla
+        //driver.manage().window().maximize();
+
+        //Hacer click en los elementos
+        driver.findElement(By.linkText("TV")).click();
+
+        //Hacer click en botones
+        driver.findElement(By.xpath("//*[@id=\"top\"]/body/div/div/div[2]/div/div[2]/div[1]/div[2]/ul/li[1]/div/div[3]/button/span/span")).click();
+
+    }
+}
